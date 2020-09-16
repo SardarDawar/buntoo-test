@@ -1,0 +1,182 @@
+{% extends "trading/base.html" %}
+{% load static %}
+{% load break %}
+
+<style>
+    .submission {
+        background-color: black;
+
+    }
+</style>
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark primary-color pt-3 pb-2 pull-right" style="opacity: 0.9;">
+
+    {% if user.is_authenticated %}
+    <!-- Logged in User -->
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home_page' %}">Home
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    {% endif %}
+
+    <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'search' %}">
+        {% csrf_token %}
+        <div class="input-group mb-3 rounded-0 pt-3">
+            <input type="text" class="form-control rounded-0" placeholder="Search" name="query">
+            <div class="input-group-append">
+                <button class="btn btn-warning rounded-0" type="submit">Go</button>
+            </div>
+        </div>
+    </form>
+</nav>
+{% endblock navbar %}
+
+<br /><br /><br /><br />
+
+{% block main %}
+<div class="container">
+
+
+    <h5 class="alert alert-primary pt-3 pd-3" style="margin-top: 50px;">
+        {% if query %}
+        Search Results For {{query}}
+        {% else %}
+        No Results Found! <a href="{% url 'home_page' %}" class="text-dark" style="margin-left: 20px;">Go Back To Home
+            Page?</a>
+        {% endif %}
+    </h5>
+
+    <center>{% if query %}
+
+
+        {% if user %}
+        {% for i in user %}
+        <div class="card" style="width:22rem; background-color: rgba(1,87,155, 0.7); color: white;">
+
+            <a href="{% url 'Userprofile' i.id   %}" class="pt-3">
+                <h2 style="color: white;">
+                    User: {{i.username}}
+                </h2>
+            </a>
+
+            <form method="GET" action="{% url 'chat' request.user.id i.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{ i}}">
+                <input type="submit" value="Send Message" class="btn btn-outline-primary">
+            </form>
+            <br><br>
+            <div class="row" style="padding: 20px 10px;">
+                <div class="col-md-6">
+                    <p><strong> First Name:</strong>
+                        {% if first_name %}
+                        {{i.first_name}}
+                        {% else %}
+                        NIL
+                        {% endif %}
+                    </p> <br>
+                    <p><strong> Email:</strong> {{i.email}}</p> <br>
+                </div>
+                <div class="col-md-6">
+                    <p><strong> Last Name:</strong>
+                        {% if last_name %}
+                        {{i.last_name}}
+                        {% else %}
+                        NIL
+                        {% endif %}
+                    </p> <br>
+                    <p><strong> Active:</strong> {{i.is_active}}</p> <br>
+                </div>
+
+                {% if  i|break:request.user == True or i == request.user %}
+                {% if i == request.user  %}
+                <h1></h1>
+                {% else %}
+                <span style="margin-left: 8%;" class="alert alert-warning alert-dismissible">{{i}} is already in your
+                    list </span>
+                {% endif %}
+                {% else %}
+                <div id="mydiv">
+                <form method="POST" id="post-form" data_id="{{i.id}}">
+                    
+                    {% csrf_token %}
+               
+                    <input type="hidden" name="id" id="id"  value="{{i.id}}">
+                    <input style="margin-left: 120%;" id="add_list{{i.id}}"  type="submit" value="Add to List"
+                        class="btn btn-primary">
+                </form>
+            </div>
+
+                {% endif %}
+                <br>
+                <br>
+            </div>
+        </div><br><br>
+        {% endfor %}
+        {% else %}
+        <h5 style="padding-top: 25%; color: white;">No results found</h5>
+    </center>
+    {% endif %}
+    {% else %}
+    <!-- <center>
+        <h5 style="padding-top: 25%">Enter User Name to get contact</h5>
+    </center> -->
+    {% endif %}
+    </center>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+<script>
+
+    $(document).on('submit', '#post-form', function (e) {
+        e.preventDefault();
+        id= $(this).attr("data_id"),
+
+        $.ajax({
+            method: 'POST',
+            url: "{% url 'search' %}",
+
+            data: {
+                id: $(this).attr("data_id"),
+                action: 'post'
+
+            },
+            success: function (json) {
+              
+                $("#add_list"+id).attr('value', 'Added to your Friend list');
+                $("#add_list"+id).css('backgroundColor', 'black');
+                $("#add_list"+id).css('margin-left', '33%');
+                // $("#mydiv").load(location.href + " #mydiv");
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#user_id').on('submit', function (e) {
+            value = document.getElementById('user_id').value
+            alert(value)
+        })
+        var $datanew = {}
+        console.log($datanew)
+        $.ajax({
+            method: "POST",
+            // 
+            data: $datanew,
+        })
+    })
+    function datasend() {
+        value = document.getElementById('user_id').value
+        alert(value)
+        $.post(att, { fname: fname, lname: lname }).done(function (data) {
+            alert(data);
+        });
+        return true;
+    }
+
+</script>
+
+{% endblock  %}

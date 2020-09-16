@@ -1,0 +1,38 @@
+{% extends "trading/base.html" %}
+{% load static %}
+
+
+{% block main %}
+<h5 style="text-align: center;" >Manage your advertisement</h5>
+
+{% for i in ads %}
+<div class="container" style="height: 100px;">
+    <div class="row justify-content-between">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <p>
+                                    <strong>
+                                        {{i.content}}
+                                    </strong>
+                                </p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>
+                                    Clicks : {{i.clicks}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><br>
+{% endfor %}
+
+
+{% endblock %}

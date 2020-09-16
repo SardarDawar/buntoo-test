@@ -1,0 +1,16 @@
+{% extends "trading/base.html" %}
+{% load static %}
+
+
+{% block main %}
+<h5 style="text-align: center;" >Create your advertisement</h5>
+
+<div id="card-element">
+</div>
+<div id="card-errors" role="alert"></div>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript" src="{% static 'client.js' %}"></script>
+
+{% endblock %}

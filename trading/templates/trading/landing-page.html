@@ -1,0 +1,154 @@
+{% extends "trading/base.html" %}
+{% load static %}
+
+{% block navbar %}
+
+{% endblock navbar %}
+   <!-- Start Main -->
+    {% block main %}
+    <!-- Start Signup Form -->
+
+    <main>
+      <div class="container">
+        <div class="row">
+          <!-- left sidebar -->
+          <div class="col-sm-7">
+
+            <div class="row">
+              <div class="col-sm-12">
+                <center>
+                  <div class="pull-left">
+                    <img src="{% static 'trading/images/lg.png' %}" alt="logo" width="370" height="370">
+                  </div>
+                </center>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <h2 class="pull-left" style="font-size: 42px; word-spacing: 15px; color: white;">
+                  <strong>C</strong>ONNECTING <strong>M</strong>ILLIONS!
+                </h2>
+              </div>
+            </div>
+
+          </div>
+          <!-- left side ends here -->
+          <!-- right sidebar -->
+          <div class="col-sm-5">
+            <div class="row">
+              <div class="col-sm-12 center">
+                <h3 style="color: white;">Create an account — it’s free!</h3>
+                <hr />
+              </div>
+            </div>
+            <div class="row">
+                <style type="text/css" scoped="">
+                  input:-webkit-autofill,
+                  input:-webkit-autofill:hover,
+                  input:-webkit-autofill:focus,
+                  input:-webkit-autofill:active {
+                      transition: background-color 5000s ease-in-out 0s;
+                      -webkit-text-fill-color: #fff !important;
+                  }
+                </style>
+                <div class="col-md-12 pull-left" style="background-color: rgb(38,50,56, .7); padding: 20px; padding-top: 35px;">
+                  <div class="myform form">
+                    <form action="{% url 'register' %}" method="POST" >
+                      {% csrf_token %}
+                      
+                      <div class="row">
+                        <div class="col-sm-12">
+                            {% if messages %}
+                              {% for message in messages %}
+                              <div class="alert alert-{{message.tags}} alert-dismissible">
+                                <button class="close" type="button" data-dismiss="alert">×</button>
+                                <i class="fa fa-warning"></i> &nbsp;&nbsp;&nbsp;{{message}}
+                              </div>
+                              {% endfor %}
+                            {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="form-group" style="opacity: 0.9;">
+                        <input type="text" autocomplete="off" name="username" class="form-control my-input rounded-0 border-light" id="name" placeholder="Name" style="background: transparent; color: white; width: 100% !important;"/>
+                      </div>
+                      <div class="form-group" style="opacity: 0.9;">
+                        <input autocomplete="off" type="email" name="email" class="form-control my-input rounded-0 border border-light" id="email" placeholder="Email Address" style="background: transparent!important; color: white;"/>
+                      </div>
+                      <div class="form-group" style="opacity: 0.9;">
+                        <input autocomplete="off" type="password" min="0" name="password1" id="phone" class="form-control rounded-0 my-input border-light" placeholder="Password" style="background: transparent!important; color: white;"/>
+                      </div>
+                      <div class="form-group" style="opacity: 0.9;">
+                        <input autocomplete="off" type="password" name="password2" class="form-control my-input border-light rounded-0" placeholder="Confirm Password" style="background: transparent!important; color: white;"/>
+                      </div>
+                      
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-block btn-outline-warning">
+                          Create Your Free Account
+                        </button>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="login-or">
+                          <center>or</center>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <a class="btn btn-block btn-outline-warning" href="#" data-toggle="modal" data-target="#loginModal">
+                          <i class="fa fa-sign-in"></i>&nbsp; Login
+                        </a>
+                        <a href="{% url 'password_reset' %}" class="text-danger pull-right pt-3">Reset Password</a>
+                      </div>
+                      </form>
+                      
+                      <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="opacity: 0.8;">
+                        <div class="modal-dialog login-modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header border-bottom-0" style="background-color: rgba(1,87,155 ,1);">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body" style="background-color: rgba(1,87,155 ,1);">
+                              <div class="form-title text-center">
+                                <div class="row">
+                                  <div class="col-sm-12">
+                                    <!-- <img src="{% static 'trading/images/lg.png' %}" alt="" style="width: 60px; height: auto; padding-right: 20px;"> -->
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 center">
+                                <form method="post" action="{% url 'login' %}">
+                                  {% csrf_token %}
+                                  <div class="form-group center">
+                                    <input type="text" class="form-control" id="email1" name="username" placeholder="Username" style="width: 280px !important; margin-left: 20px;">
+                                  </div>
+                                  <div class="form-group">
+                                    <input type="password" class="form-control" id="password1" name="password" placeholder="Password" style="width: 280px !important; margin-left: 20px;">
+                                  </div>
+                                  <center>
+                                      <button type="submit" class="btn btn-outline-primary border-light text-white" style="width: 200px !important;">Login</button>
+                                  </center>                                  
+                                </form>
+                                <br />
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </main>
+        <!-- End Signup Form -->
+    {% endblock main %}
+    <!-- End Main -->
+
+{% block footer %}
+{% endblock %}

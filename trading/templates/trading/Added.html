@@ -1,0 +1,11 @@
+{% extends "trading/base.html" %}
+{% load static %}
+
+
+{% block main %}
+
+<span class="alert alert-success" style="margin-left: 30%;width:max-content;">Congratulations !!! {{name}} is added your Personal List</span><br><br>
+<a href="{% url 'user_profile' %}" style="margin-left: 40%" role="button" class="btn btn-success">Go Back to your Profile</a>
+
+
+{% endblock %}

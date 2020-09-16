@@ -1,0 +1,7 @@
+1. When people sign up the they are directed into home page -> DONE
+2. Make all backgrounds the map background -> DONE
+3. Username/ password boxes same size (make it match the longer one) -> DONE
+4. Update for post page -> DONE
+5. Posting feature on Profile page -> DONE
+6. Background color white with black links/ accents logo color blue
+7. Remove “Login” and “Register” links on search results page

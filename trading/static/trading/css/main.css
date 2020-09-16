@@ -1,0 +1,269 @@
+body {
+  background-color: black;
+}
+
+/* Header */
+.header-div {
+  background-color: rgb(82, 67, 146);
+  color: white;
+  height: 60px;
+}
+
+/* Logo */
+#logo-img {
+  height: auto;
+  width: 75px;
+}
+/* Main Content */
+.main-content {
+  background-color: white !important;
+  /* padding-top: 1px;
+  padding-bottom: 100px; */
+}
+/* #landing-page-content { */
+  /* background-color: rgb(255, 18, 87, 0.8); */
+/* } */
+#login-email-input,
+#login-password-input {
+  height: 30px;
+  width: auto;
+}
+/* Sign Up Form Start */
+.send-button {
+  background: #356eea;
+  width: 100%;
+  font-weight: 600;
+  color: #fff;
+  padding: 8px 25px;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.g-button {
+  color: black !important;
+  border: 0.5px solid black;
+  background: white !important;
+  width: 100%;
+  font-weight: 600;
+  padding: 8px 25px;
+}
+.my-input {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: text;
+  padding: 8px 10px;
+  transition: border 0.1s linear;
+}
+.login-input{
+  color:black;
+}
+.header-title {
+  margin: 5rem 0;
+}
+h1 {
+  font-size: 31px;
+  line-height: 40px;
+  font-weight: 600;
+  color: #4c5357;
+}
+h2 {
+  color: #5e8396;
+  font-size: 21px;
+  line-height: 32px;
+  font-weight: 400;
+}
+.login-or {
+  position: relative;
+  color: #aaa;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.span-or {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  margin-left: -25px;
+  background-color: #fff;
+  width: 50px;
+  text-align: center;
+}
+.hr-or {
+  height: 1px;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 26px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+}
+/* Sign Up Form End */
+
+/* Footer Start */
+.page-footer {
+  color: white;
+  background-color: rgb(0, 0, 0);
+}
+
+/* Footer Title */
+h5 {
+  color: #134f72;
+}
+
+
+.inbox-wrapper{
+  opacity: 0;
+}
+/* Inbox drop down */
+.inbox-dropdown{
+  margin-top: 60px;
+  width: 550px;
+  position: absolute;
+  left:10vw;
+  top:0;
+  z-index: 1;
+  height: 300px;
+  background:#fdfdfd;
+  display: grid;
+  grid-template-columns: 250px 300px;
+}
+.backdrop{
+  width: 100vw;
+  display: none;
+  background: transparent;
+  background-color: transparent ;
+  height: 100vh;
+}
+
+.chat-profile-img{
+  border-radius: 50%;
+}
+.chat-list{
+  overflow-y: scroll;
+}
+.inbox-dropdown-chat{
+  overflow:hidden;
+  background:#fdfdfd;
+  display: none;
+} 
+.chat-message{
+  padding:10px;
+}
+.chatbox{
+  overflow-y: scroll;
+  height: 230px;
+  padding:5px;
+}
+.post-message-form{
+  display: flex;
+  justify-content: center;
+}
+.chats .active{
+  background-color: #356eea;
+  color: white;
+}
+
+@media only screen and (max-width: 580px){
+  .inbox-dropdown{
+    left: 0;
+    grid-template-columns: 30% auto;
+    width: 100%;
+  }
+  .inbox-dropdown-chat{
+    left: 0;
+    width: 100%;
+  }
+}
+
+/* loader animation */
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top:110px;
+  margin-left: 100%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #4c5357;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+/* Loader animation end */
+
+/* Links */
+/* a {
+  color: rgb(0, 60, 255);
+} */
+/* Footer End */
+
+@media only screen and (min-width: 300px) {
+  .large-header-title {
+    font-size: 70px;
+  }
+}
+
+@media only screen and (min-width: 1165px) {
+  .large-header-title {
+    font-size: 125px;
+  }
+}
+
+@media only screen and (min-width: 1376px) {
+  .large-header-title {
+    font-size: 150px;
+  }
+}
+
+
+

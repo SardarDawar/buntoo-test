@@ -1,0 +1,20 @@
+{% extends "trading/base.html" %}
+{% load static %}
+
+<!-- User Form -->
+{% block main %}
+<div class="container-fluid main-content">
+    <div class="row">
+        <div class="col-xs-12 col-md-4"></div>
+        <div class="col-xs-12 col-md-4">
+            <div class="content-section main-content">
+                <h2>You have been logged out</h2>
+                <div class="border-top pt-3">
+                    <small class="text-muted"><a href="{% url 'login' %}">Log In Again</a></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4"></div>
+    </div>
+</div>
+{% endblock main %}

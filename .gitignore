@@ -1,0 +1,7 @@
+.vscode
+myenv
+/myenv
+myenv/
+env/
+venv/
+demo/

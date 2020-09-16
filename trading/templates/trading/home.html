@@ -1,0 +1,195 @@
+<!-- inherits repeated elements from base.html -->
+{% extends 'trading/base.html' %}
+<!-- Load Static Files -->
+{% load static %}
+<!-- Load crispy forms -->
+{% load crispy_forms_tags %} 
+<!-- Access username variable, doesn't need added to view because User is built-in to Django -->
+
+{% block bodytag %}
+{% endblock bodytag %}
+
+{% block navbar %}
+  {% include 'trading/navbar.html' %}
+{% endblock navbar %}
+
+
+{% block main %}
+<style>
+  .hrx  {
+    color: white;
+    background-color: white;
+  }
+  input[type="file"] {
+    display: none;
+  }
+</style>
+
+<div class="container-fluid" style="background-image: url({% static 'trading/images/earth.jpg' %}); background-size: cover; 
+                                    background-attachment: fixed; background-position: center; background-repeat: no-repeat; min-height: 100vh;">
+  <div class="row">
+      <div class="col-sm-3"></div>
+      <!-- padding left -->
+      <div class="col-sm-6">
+        <br /><br /><br /> <br /><br />
+        <div class="container text-white" style="background-color: rgba(38,50,56, 0.7); opacity: 0.9; padding: 35px; border: cornsilk;">
+            {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-{{message.tags}} alert-dismissible">
+                <button class="close" type="button" data-dismiss="alert">×</button>
+                <i class="fa fa-warning"></i> &nbsp;&nbsp;&nbsp;{{message}}
+              </div>
+              {% endfor %}
+            {% endif %}
+            <h5 style="text-align: center; color: white;">Create whats on your mind</h5>
+          <hr />
+          <form method="POST" class="form-group"  enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label>What's on your mind?<span style="color: red;">*</span> </label>
+                  <textarea  name="content" class="form-control"></textarea>
+              </div>
+              <center>
+                <div class="form-group">
+                    <label class="btn btn-outline-info fa fa-image">&nbsp;&nbsp;Add Image 
+                      <input type="file" accept="image/*" name="img" placeholder="Share Image" style="color: black;">
+                    </label>
+
+                    <label class="btn btn-outline-info fa fa-file-video-o">&nbsp;&nbsp;Add Video&nbsp; 
+                      <input type="file" accept="video/*" name="video" placeholder="Share  Video" style="color: black;">
+                    </label>
+                </div>
+              </center>
+
+              <center>
+                  <input type="submit" class="btn btn-large btn-primary" style="padding-left: 60px; padding-right: 60px; margin-top: 15px;">
+              </center>
+          </form>
+          <br />
+        </div>
+        <br />
+      </div>
+      
+      <div class="col-sm-3"></div>
+      <!-- padding right -->
+    </div>
+    <br /><br />
+<!-- post panel ends here -->
+
+{% if empty == 1 %}
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+          <div class="alert alert-info alert-dismissable">
+              <p class="center text-center">
+                <strong>You have't posted anything yet!</strong>
+              </p>
+          </div>
+        </div>
+
+        <div class="col-sm-3"></div>
+      </div>
+    </div>
+{% endif %}
+
+  {% for a, post in posts %}
+  {% if a %}
+  <div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-10">
+            <div class="card" style="background-color: lightblue;">
+                <div class="card-body" onclick="window.open('/count-clicks/{{post.id}}', '_blank')" >
+                    <div class="container">
+                        <div class="row" style="height: 200px;">
+                            <div class="col-sm-4 text-center">
+                              {% if ad %}
+                              <p><strong>
+                               Ad posted by  <a href="{% url 'user_profile' %}">{{request.user}}</a>
+                              </strong>
+                              {% endif %}
+                                <p style="color: white;"><strong>
+                                    {{post.content}}
+                                </strong>
+                                </p>
+                            </div>
+                            {% if post.img %}
+                            <div class="col-sm-4 rounded">
+                                
+                              <img src="{{post.img.url}}" style="width: auto;height: 180px;">
+                                <a href={{post.linked}} >{{post.linked}}</a>
+
+                            </div>
+                            {% endif %}
+                            {% if post.video %}
+                            <div class="col-sm-4">
+                                <video width="auto" height="180px" loop autoplay muted>
+                                    <source src="{{post.video.url}}">
+                                </video>
+                                <a href={{post.linked}}></a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <br>
+  {% else %}
+  
+  <div class="container" style="background-color: rgba(38,50,56, 0.5);padding: 20px; border: 1px solid gray; color: white;">
+    <div class="row">
+      <div class="col-sm-4">
+        
+        <div class="info-box">
+          <a href="{% url 'Userprofile' post.author.id   %}">
+            <img class="rounded-circle pull-left" height="75px" width="auto" src="{{ post.author.profile.image.url }}" alt="Card image cap">
+          </a>
+            <center>
+              <p class="center align-content-center">
+                <a href="{% url 'Userprofile' post.author.id   %}">
+                  {{post.author}}
+                </a>
+              </p>
+              <p class="center">Last Activity : {{post.time_since_posted}}</p>
+            </center>
+        </div>
+
+      </div>
+      <div class="col-sm-4">
+        <p>{{ post.title }}</p>
+        {% if post.content%}
+        <p>{{ post.content }}</p>
+        <hr class="hrx" />
+        {% endif%}
+        {% if post.img %}
+        <div class="col-sm-4">
+            <img src="{{post.img.url}}" style="width: auto;height: 180px;">
+        </div>
+        {% endif %}
+        {% if post.video %}
+        <div class="col-sm-4">
+            <video width="auto" height="180px" controls>
+                <source src="{{post.video.url}}">
+            </video>
+        </div>
+        {% endif %}
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+  
+  {% endif %}
+  <br />
+  {% endfor %}
+  {% endblock main %}
+  
+  {% block footer %}
+  {% endblock %}
+  
+</div>
+
+</div>
+<!-- closing parallax here -->

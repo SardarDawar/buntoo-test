@@ -1,0 +1,186 @@
+<!-- inherits repeated elements from base.html -->
+{% extends 'trading/base.html' %}
+<!-- Load Static Files -->
+{% load static %}
+<!-- Load crispy forms -->
+{% load crispy_forms_tags %} {% block main %}
+
+<style>
+  input {
+    width: 60%!important
+  }
+  @media screen and (min-width: 200px)
+  and (max-width: 576px) {
+    input { width: 100%!important }
+  }
+  #id_image{
+    color:black;
+  }
+</style>  
+
+
+<!-- Access username variable, doesn't need added to view because User is built-in to Django -->
+<div class="container">
+  <div class="row" style="background-color: rgba(38,50,56 ,0.7); padding: 20px;">
+    <div class="col-sm-4">
+      <div class="card">
+        <img id="previewImage" class="card-img-top" src="{{ user.profile.image.url }}" alt="Card image cap" width="128" height="150">
+        <div class="card-body">
+          <p class="card-text">Username : {{user.username}}</p>
+          <p class="card-text">Password: {{user.email}}</p>
+          {% if friend_List %}
+          <p class="card-text"><u>You have {{friend_List|length}} friends </u></p>
+          {% else %}
+            <p class="card-text">You Currently Have <strong>No</strong> Friends</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="overflow-y: auto; height: 100px; background-color: rgb(245, 245, 245, 0.8); margin-top: 8px; padding: 5px; color: black;" class="rounded">
+        {% if not friend_List %}
+          <div class="overflow-auto">
+            <p class="center text-center" style="margin-top: 8px;">No friend list to show</p>
+          </div>
+        {% endif %}
+        {% for i in friend_List %}
+
+              <div class="overflow-auto">
+                <input type="hidden" name="username" value="{{i}}">
+                <a href="{% url 'Userprofile' i.id   %}" style="margin-bottom: 5px; margin-left: 8px; color: black;">{{i}}</a>
+                <button
+                onclick="showChatBox('{{ request.user.id }}','{{ i.id }}',true)"
+                type="submit" value="" 
+                class="btn btn-link btn-sm pull-right send-message-btn"
+                style="margin-bottom: 5px; color: black;">
+                  Send Message To {{i}}</button>
+              </div>
+
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="col-sm-8" style="color: white;">
+      <form method="POST" action="{% url 'user_profile' %}" enctype="multipart/form-data"><!-- form will not work without this-->
+        {% csrf_token %}  <!-- form will not work without this-->
+        <fieldset class="form-group" >         
+            <legend class="border-bottom mb-4">Profile Info</legend>
+          <!-- access the form variable | use crispy forms styles -->
+            {{ user_update_form|crispy }}
+            {{ profile_update_form|crispy }}
+            <input type="hidden" hidden="" name="form_name" value="user_info">
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-primary" type="submit" style="padding: 5px 40px;">Update</button> <!-- button type must be submit-->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="container" style="margin-top: -85px;">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <br /><br /><br /> <br /><br />
+        <div class="container text-white" style="background-color: rgba(38,50,56 ,0.7); padding: 45px; border: cornsilk;">
+            {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-{{message.tags}} alert-dismissible">
+                <button class="close" type="button" data-dismiss="alert">×</button>
+                <i class="fa fa-warning"></i> &nbsp;&nbsp;&nbsp;{{message}}
+              </div>
+              {% endfor %}
+            {% endif %}
+            <h5 style="text-align: center; color: white;">Create whats on your mind</h5>
+          <hr />
+          <form method="POST" action="{% url 'user_profile' %}" class="form-group"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>What's on your mind?<span style="color: red;">*</span> </label>
+                <textarea  name="content" class="form-control"></textarea>
+            </div>
+            <input type="hidden" hidden="" name="form_name" value="post_form">
+            <center>
+              <div class="form-group">
+                  <label class="btn btn-outline-info fa fa-image">&nbsp;&nbsp;Add Image 
+                    <input hidden type="file" accept="image/*" name="img" placeholder="Share Image" style="color: black;">
+                  </label>
+
+                  <label class="btn btn-outline-info fa fa-file-video-o">&nbsp;&nbsp;Add Video&nbsp; 
+                    <input hidden type="file" accept="video/*" name="video" placeholder="Share  Video" style="color: black;">
+                  </label>
+              </div>
+            </center>
+
+            <center>
+                <input type="submit" class="btn btn-large btn-primary" style="padding-left: 60px; padding-right: 60px; margin-top: 15px;">
+            </center>
+        </form>
+        </div>
+    </div>
+    <div class="col-sm-1"></div>
+  </div>
+</div>
+
+
+<!-- Advertisement Information Here -->
+
+
+{% if ads %}
+  <h5 style="text-align: center; color: white;" >Your advertisements</h5><br>
+  {% for i in ads %}
+  <div class="container" style="height: 100px;">
+      <div class="row justify-content-between">
+          <div class="col-sm-12">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="container">
+                          <div class="row">
+                              <div class="col-sm-10">
+                                  <p>
+                                      <strong>
+                                          {{i.content}}
+                                      </strong>
+                                  </p>
+                              </div>
+                              <div class="col-sm-2">
+                                  <p>
+                                      Clicks : {{i.clicks}}
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div><br>
+  {% endfor %}
+
+{% else %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+      <h3 style="color: white;">
+      You haven't posted any Advertisement Yet.
+      </h3>
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+</div>
+
+{% endif %}
+
+<script src="{% static 'js/base.js' %}"></script>
+<script type="text/javascript">
+  var fileUploadField = document.getElementById("id_image");
+
+  fileUploadField.onchange = function(event){
+    let _filePath = URL.createObjectURL(event.target.files[0]);
+    document.getElementById("previewImage").setAttribute('src', _filePath);
+  };
+</script>
+{% endblock main %}
