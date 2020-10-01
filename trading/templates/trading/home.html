@@ -1,9 +1,12 @@
 <!-- inherits repeated elements from base.html -->
-{% extends 'trading/base.html' %}
+{% extends "trading/base.html" %}
+
 <!-- Load Static Files -->
 {% load static %}
 <!-- Load crispy forms -->
 {% load crispy_forms_tags %} 
+<!-- load template tag -->
+{% load references %}
 <!-- Access username variable, doesn't need added to view because User is built-in to Django -->
 
 {% block bodytag %}
@@ -15,6 +18,7 @@
 
 
 {% block main %}
+
 <style>
   .hrx  {
     color: white;
@@ -95,6 +99,7 @@
 
   {% for a, post in posts %}
   {% if a %}
+  
   <div class="container">
     <div class="row justify-content-between">
         <div class="col-sm-10">
@@ -109,7 +114,9 @@
                               </strong>
                               {% endif %}
                                 <p style="color: white;"><strong>
-                                    {{post.content}}
+                                  {{post.content }}
+                                 
+                                
                                 </strong>
                                 </p>
                             </div>
@@ -159,9 +166,13 @@
 
       </div>
       <div class="col-sm-4">
-        <p>{{ post.title }}</p>
+        <p >{{ post.title }}</p>
         {% if post.content%}
         <p>{{ post.content }}</p>
+        <form data_id="{{post.id}}" id="post-form">
+        <input type="submit" value="Reference Check" id="edit_foo" class="btn btn-success">
+      </form>
+       <p id="data"></p>
         <hr class="hrx" />
         {% endif%}
         {% if post.img %}
@@ -183,13 +194,50 @@
   
   {% endif %}
   <br />
+
+
   {% endfor %}
-  {% endblock main %}
-  
-  {% block footer %}
-  {% endblock %}
+ 
+  <div class="modal fade" id="foo_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">References</div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
   
 </div>
 
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <!-- closing parallax here -->
+<script>
+    $(document).on('submit', '#post-form', function (e) {
+     e.preventDefault()
+     post_id= $(this).attr("data_id"),
+
+  
+
+
+    $.ajax({
+        type: 'GET',
+        url: "/reference/"+post_id ,
+        success: function (data, textStatus, jqXHR) {
+          $('#foo_modal').find('.modal-body').html(data);
+            $('#foo_modal').modal('show');
+            
+                    },
+    });
+
+  })
+</script>
+
+
+
+{% endblock main %}
+{% block footer %}
+{% endblock %}

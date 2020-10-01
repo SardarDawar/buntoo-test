@@ -26,3 +26,7 @@ stripe==2.50.0
 urllib3==1.25.9
 whitenoise==5.0.1
 yfinance==0.1.54
+django-rest-auth
+djangorestframework
+django-allauth
+requests

@@ -19,6 +19,49 @@ import stripe
 from django.http import JsonResponse
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+import requests 
+from bs4 import BeautifulSoup
+import re
+
+
+
+
+def reference_finder(value):
+  
+    print(value)
+    
+    headers_Get = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Encoding': 'gzip, deflate',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
+        }
+
+    q=value
+
+    request = requests.Session()
+    q_search = '+'.join(q.split())
+    url = 'https://www.google.com/search?q=' + q_search + '&ie=utf-8&oe=utf-8'
+    page = request.get(url, headers=headers_Get)
+
+    soup = BeautifulSoup(page.text, "html.parser")
+    response = soup.find_all('div',class_='rc')
+    first_three = []
+    matching = []
+    for i in response:
+        first_three.append(i.find('a').attrs['href'])
+        
+
+    # for i in first_three:
+    #     pages =request.get(i)
+    #     result = BeautifulSoup(pages.text, "html.parser")
+    #     matching.append(re.findall(q,result.text))
+
+    return first_three
+
 
 # Landing Page
 def landing_page(request):
@@ -324,10 +367,61 @@ def countclick(request,id):
     return redirect(obj.linked)
 
 
+# Reference Finder View #
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models.fields.files import ImageFieldFile
+
+
+class ExtendedEncoder(DjangoJSONEncoder):
+    def default(self, o):
+        if isinstance(o, ImageFieldFile):
+            return str(o)
+        else:
+            return super().default(o)
+from django.forms.models import model_to_dict
+
+def reference(request,id):
+    post_data = Post.objects.get(id=id)
+    result = reference_finder(post_data.content)
+    for i in range(0,len(result)):
+        result[i]="<a target='_blank' href= {}><p>{}</p></a>".format(result[i],result[i])
+    print(result)
+    return JsonResponse(result, safe=False)
+
 
 ########################## REST API VIEWS ##############################
 from .serializers import *
 from rest_framework import viewsets
+from rest_framework import generics
+from rest_framework import filters
+
 class ProfileViewset(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+class PostViewset(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class FriendViewset(viewsets.ModelViewSet):
+    queryset = Friend_List.objects.all()
+    serializer_class = FriendSerializer
+
+class FriendListDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = FriendSerializer
+    queryset = Friend_List.objects.all()
+
+
+class SearchAPIView(generics.ListCreateAPIView):
+    search_fields = ['username']
+    filter_backends = (filters.SearchFilter,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
